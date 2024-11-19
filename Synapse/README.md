@@ -174,16 +174,13 @@ services:
 ```
 
 ### Infrastructure Improvements
-- Added health check endpoints
 - Implemented container orchestration
 - Added Docker networking configuration
 - Set up environment variable management
 
 ### DevOps Enhancements
 - Added CI/CD pipeline support
-- Implemented container health monitoring
 - Added Docker volume management
-- Set up container logging
 
 ## Version 1.0.0 (Initial Release)
 
@@ -232,20 +229,6 @@ services:
 - `UpdateApiUrl`: URL for update API
 - `AlertApiUrl`: URL for alerts API
 
-## Future Planned Improvements
-
-### Version 1.2.0 (Planned)
-- Add Kubernetes support
-- Implement service mesh
-- Add distributed tracing
-- Enhance container security
-
-### Version 1.3.0 (Planned)
-- Add container monitoring
-- Implement auto-scaling
-- Add disaster recovery
-- Enhance logging and analytics
-
 ## Migration Notes
 
 ### For Docker Deployment
@@ -265,7 +248,6 @@ services:
 - Multi-stage Docker builds
 - Container security best practices
 - Environment-based configurations
-- Health check implementations
 
 ### Performance Considerations
 - Optimized container builds
