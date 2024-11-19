@@ -11,6 +11,13 @@ namespace Synapse.Services
         private readonly string _updateApiUrl;
         private readonly ILogger<OrderRepository> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderRepository"/> class.
+        /// </summary>
+        /// <param name="httpClient">The HTTP client wrapper.</param>
+        /// <param name="ordersApiUrl">The URL for fetching orders.</param>
+        /// <param name="updateApiUrl">The URL for updating orders.</param>
+        /// <param name="logger">The logger instance.</param>
         public OrderRepository(IHttpClientWrapper httpClient, string ordersApiUrl, string updateApiUrl, ILogger<OrderRepository> logger)
         {
             _httpClient = httpClient;
@@ -19,6 +26,10 @@ namespace Synapse.Services
             _logger = logger;
         }
 
+        /// <summary>
+        /// Fetches the list of orders from the API.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an enumerable of orders.</returns>
         public async Task<IEnumerable<Order>> FetchOrders()
         {
             _logger.LogInformation("Fetching orders from {OrdersApiUrl}", _ordersApiUrl);
@@ -51,6 +62,13 @@ namespace Synapse.Services
             }
         }
 
+        /// <summary>
+        /// Updates the specified order.
+        /// </summary>
+        /// <param name="order">The order to update.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the order is null.</exception>
+        /// <exception cref="HttpRequestException">Thrown when the HTTP request fails.</exception>
         public async Task UpdateOrder(Order order)
         {
             if (order == null)

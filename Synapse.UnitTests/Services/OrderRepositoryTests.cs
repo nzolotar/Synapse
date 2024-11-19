@@ -9,12 +9,12 @@ using System.Net;
 namespace Synapse.Tests.Services
 {
     /** 
-    Tests cover: 
-    successful order retrieval
-    error handling
-    empty response handling
-    order update with items
-    **/
+        Tests cover: 
+        successful order retrieval
+        error handling
+        empty response handling
+        order update with items
+        **/
     public class OrderRepositoryTests
     {
         private readonly Mock<IHttpClientWrapper> _mockHttpClient;
@@ -23,6 +23,9 @@ namespace Synapse.Tests.Services
         private readonly OrderRepository _repository;
         private readonly Mock<ILogger<OrderRepository>> _mockLogger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderRepositoryTests"/> class.
+        /// </summary>
         public OrderRepositoryTests()
         {
             _mockHttpClient = new Mock<IHttpClientWrapper>();
@@ -31,28 +34,32 @@ namespace Synapse.Tests.Services
             _mockLogger.Object);
         }
 
+        /// <summary>
+        /// Tests that FetchOrders returns orders when the API call is successful.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task FetchOrders_WhenSuccessful_ReturnsOrders()
         {
             // Arrange
             Order[] orders = new[]
             {
-                new Order(
-                    OrderId: "ORD-001",
-                    Items:
-                    [
-                        new OrderItem("Item 1", "Pending", 1),
-                        new OrderItem("Item 2", "Shipped", 2)
-                    ]
-                ),
-                new Order(
-                    OrderId: "ORD-002",
-                    Items:
-                    [
-                        new OrderItem("Item 3", "Delivered", 3)
-                    ]
-                )
-            };
+                    new Order(
+                        OrderId: "ORD-001",
+                        Items:
+                        [
+                            new OrderItem("Item 1", "Pending", 1),
+                            new OrderItem("Item 2", "Shipped", 2)
+                        ]
+                    ),
+                    new Order(
+                        OrderId: "ORD-002",
+                        Items:
+                        [
+                            new OrderItem("Item 3", "Delivered", 3)
+                        ]
+                    )
+                };
 
             string jsonResponse = JArray.FromObject(orders).ToString();
             HttpResponseMessage response = new()
@@ -92,6 +99,10 @@ namespace Synapse.Tests.Services
             _mockHttpClient.Verify(x => x.GetAsync(_ordersApiUrl), Times.Once);
         }
 
+        /// <summary>
+        /// Tests that FetchOrders returns an empty collection when the API call fails.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task FetchOrders_WhenApiFailure_ReturnsEmptyCollection()
         {
@@ -114,6 +125,10 @@ namespace Synapse.Tests.Services
             _mockHttpClient.Verify(x => x.GetAsync(_ordersApiUrl), Times.Once);
         }
 
+        /// <summary>
+        /// Tests that UpdateOrder sends the correct request to the API.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task UpdateOrder_SendsCorrectRequest()
         {
@@ -148,6 +163,10 @@ namespace Synapse.Tests.Services
                 Times.Once);
         }
 
+        /// <summary>
+        /// Tests that FetchOrders returns an empty collection when the API response is empty.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [Fact]
         public async Task FetchOrders_WithEmptyResponse_ReturnsEmptyCollection()
         {
@@ -172,11 +191,11 @@ namespace Synapse.Tests.Services
         }
 
         /// <summary>
-        /// Helps verify the JSON content sent in update requests
+        /// Helps verify the JSON content sent in update requests.
         /// </summary>
-        /// <param name="content"></param>
-        /// <param name="expectedOrder"></param>
-        /// <returns></returns>
+        /// <param name="content">The JSON content sent in the request.</param>
+        /// <param name="expectedOrder">The expected order object.</param>
+        /// <returns>True if the content matches the expected order; otherwise, false.</returns>
         private bool VerifyJsonContent(StringContent content, Order expectedOrder)
         {
             string contentString = content.ReadAsStringAsync().Result;

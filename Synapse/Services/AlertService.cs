@@ -23,6 +23,15 @@ namespace Synapse.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        /// <summary>
+        /// Sends an alert for a specific order item.
+        /// </summary>
+        /// <param name="orderId">The ID of the order.</param>
+        /// <param name="item">The item for which the alert is being sent.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ArgumentException">Thrown when the orderId is null or empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when the item is null.</exception>
+        /// <exception cref="HttpRequestException">Thrown when the HTTP request fails.</exception>
         public async Task SendAlert(string orderId, OrderItem? item)
         {
             if (string.IsNullOrEmpty(orderId))
