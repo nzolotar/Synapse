@@ -1,3 +1,4 @@
+using NLog.Extensions.Logging;
 using Synapse.Http;
 using Synapse.Interfaces;
 using Synapse.Services;
@@ -31,6 +32,7 @@ public class Program
             .AddCommandLine(args)
             .Build();
 
+
         // Get API settings for the environment and bind
         ApiSettings apiSettings = new();
         configuration.GetSection("ApiSettings").Bind(apiSettings);
@@ -39,6 +41,16 @@ public class Program
         ServiceCollection services = new();
         services.AddHttpClient();
         services.AddScoped<IHttpClientWrapper, HttpClientWrapper>();
+
+
+        // Configure Logging
+        services.AddLogging(logging =>
+        {
+            logging.ClearProviders();
+            logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+            logging.AddNLog(configuration);
+        });
+
 
         // Register configuration
         services.AddSingleton<IConfiguration>(configuration);
