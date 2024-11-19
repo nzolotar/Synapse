@@ -1,9 +1,22 @@
-version: '3.9'
+version: '3.8'
 
 services:
-  web:
+  synapse:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: synapse-processor
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    build: .
-    ports:
-      - "8080:80"
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ApiSettings__OrdersApiUrl=https://orders-api.com/orders
+      - ApiSettings__UpdateApiUrl=https://update-api.com/update
+      - ApiSettings__AlertApiUrl=https://alert-api.com/alerts
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - synapse-network
+
+networks:
+  synapse-network:
+    driver: bridge
