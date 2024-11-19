@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse", "Synapse\Synapse.csproj", "{6FBE4387-29E7-48F9-9398-4A5CF6D8BA83}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synapse.Tests", "Synapse.UnitTests\Synapse.Tests.csproj", "{20EC0397-CB89-473B-B889-413FC74D4F9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FBE4387-29E7-48F9-9398-4A5CF6D8BA83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FBE4387-29E7-48F9-9398-4A5CF6D8BA83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FBE4387-29E7-48F9-9398-4A5CF6D8BA83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FBE4387-29E7-48F9-9398-4A5CF6D8BA83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20EC0397-CB89-473B-B889-413FC74D4F9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20EC0397-CB89-473B-B889-413FC74D4F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20EC0397-CB89-473B-B889-413FC74D4F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20EC0397-CB89-473B-B889-413FC74D4F9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26E030D9-90E4-44AD-A87C-D11D44BF5C85}
+	EndGlobalSection
+EndGlobal
