@@ -1,25 +1,19 @@
 ﻿# Build stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY Directory.Build.props ./
+
 # Copy csproj and restore dependencies
 COPY ["src/Synapse/Synapse.csproj", "src/Synapse/"]
 RUN dotnet restore "src/Synapse/Synapse.csproj"
 
-# Copy remaining source code
+# Copy remaining source code and build application
 COPY . .
-# alternatively: COPY ["src/", "src/"]
-
-# Build the application
 WORKDIR "/src/Synapse"
 RUN dotnet build "Synapse.csproj" -c Release -o /app/build
-
-# Publish stage
-FROM build AS publish
 RUN dotnet publish "Synapse.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Final stage
-FROM mcr.microsoft.com/dotnet/runtime:7.0 AS final
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS final
 WORKDIR /app
 
 # Create non-root user for security
@@ -31,7 +25,7 @@ RUN adduser --disabled-password \
 RUN mkdir -p /app/logs && chown -R dotnetuser /app/logs
 
 # Copy published files
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
