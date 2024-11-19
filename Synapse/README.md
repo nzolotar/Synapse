@@ -135,8 +135,8 @@ public async Task ProcessOrders_WithDeliveredItems_SendsAlerts()
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MedicalEquipment.Core/*.csproj", "MedicalEquipment.Core/"]
-RUN dotnet restore "MedicalEquipment.Core/MedicalEquipment.Core.csproj"
+COPY ["Synapse.Core/*.csproj", "Synapse.Core/"]
+RUN dotnet restore "Synapse.Core/Synapse.Core.csproj"
 COPY . .
 RUN dotnet build -c Release -o /app/build
 RUN dotnet publish -c Release -o /app/publish
@@ -145,7 +145,7 @@ RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "MedicalEquipment.Core.dll"]
+ENTRYPOINT ["dotnet", "Synapse.Core.dll"]
 ```
 
 #### Docker Compose Setup
@@ -213,7 +213,7 @@ services:
 ### Using Docker
 1. Build the container:
    ```bash
-   docker build -t medical-equipment-system .
+   docker build -t synapse .
    ```
 
 2. Run with Docker Compose:
