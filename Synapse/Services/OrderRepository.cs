@@ -26,7 +26,8 @@ namespace Synapse.Services
             }
 
             string ordersData = await response.Content.ReadAsStringAsync();
-            return JArray.Parse(ordersData).ToObject<Order[]>();
+            Order[]? ordersArray = JArray.Parse(ordersData).ToObject<Order[]>();
+            return ordersArray ?? Enumerable.Empty<Order>();
         }
 
         public async Task UpdateOrder(Order order)
