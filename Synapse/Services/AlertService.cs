@@ -8,7 +8,9 @@ namespace Synapse.Services
     {
         private readonly IHttpClientWrapper _httpClient;
         private readonly string _alertApiUrl;
-        public AlertService(IHttpClientWrapper httpClient, string alertApiUrl)
+        private readonly ILogger<AlertService> _logger;
+        public AlertService(IHttpClientWrapper httpClient, string alertApiUrl,
+            ILogger<AlertService> logger)
         {
             if (httpClient == null)
                 throw new ArgumentNullException(nameof(httpClient));
@@ -18,6 +20,7 @@ namespace Synapse.Services
 
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _alertApiUrl = alertApiUrl;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task SendAlert(string orderId, OrderItem? item)
@@ -27,6 +30,11 @@ namespace Synapse.Services
 
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
+
+            _logger.LogInformation(
+                "Sending alert for order {OrderId} with item {ItemDescription}",
+                orderId,
+                item.Description);
 
             var alertData = new
             {
@@ -43,6 +51,10 @@ namespace Synapse.Services
 
             if (!response.IsSuccessStatusCode)
             {
+                _logger.LogError(
+                        "Failed to send alert for order {OrderId}. Status code: {StatusCode}",
+                        orderId,
+                        response.StatusCode);
                 throw new HttpRequestException($"Failed to send alert for order {orderId}");
             }
         }

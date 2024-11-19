@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using Newtonsoft.Json.Linq;
 using Synapse.Entities;
 using Synapse.Interfaces;
@@ -20,11 +21,14 @@ namespace Synapse.Tests.Services
         private readonly string _ordersApiUrl = "http://api/orders";
         private readonly string _updateApiUrl = "http://api/update";
         private readonly OrderRepository _repository;
+        private readonly Mock<ILogger<OrderRepository>> _mockLogger;
 
         public OrderRepositoryTests()
         {
             _mockHttpClient = new Mock<IHttpClientWrapper>();
-            _repository = new OrderRepository(_mockHttpClient.Object, _ordersApiUrl, _updateApiUrl);
+            _mockLogger = new Mock<ILogger<OrderRepository>>();
+            _repository = new OrderRepository(_mockHttpClient.Object, _ordersApiUrl, _updateApiUrl,
+            _mockLogger.Object);
         }
 
         [Fact]

@@ -59,12 +59,14 @@ public class Program
         services.AddScoped<IOrderRepository>(sp => new OrderRepository(
              sp.GetRequiredService<IHttpClientWrapper>(),
              apiSettings.OrdersApiUrl,
-             apiSettings.UpdateApiUrl
+             apiSettings.UpdateApiUrl,
+             sp.GetRequiredService<ILogger<OrderRepository>>()
          ));
 
         services.AddScoped<IAlertService>(sp => new AlertService(
             sp.GetRequiredService<IHttpClientWrapper>(),
-            apiSettings.AlertApiUrl
+            apiSettings.AlertApiUrl,
+            sp.GetRequiredService<ILogger<AlertService>>()
         ));
         services.AddScoped<IOrderProcessor, OrderProcessor>();
 

@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json.Linq;
 using Synapse.Entities;
@@ -26,13 +27,15 @@ namespace Synapse.Tests.Services
         private readonly Mock<IHttpClientWrapper> _httpClientMock;
         private readonly string _alertApiUrl;
         private readonly AlertService _sut;
+        private readonly Mock<ILogger<AlertService>> _loggerMock;
 
         public AlertServiceTests()
         {
             _fixture = new Fixture().Customize(new AutoMoqCustomization());
             _httpClientMock = _fixture.Freeze<Mock<IHttpClientWrapper>>();
             _alertApiUrl = "https://alert-api.com/alerts";
-            _sut = new AlertService(_httpClientMock.Object, _alertApiUrl);
+            _loggerMock = _fixture.Freeze<Mock<ILogger<AlertService>>>();
+            _sut = new AlertService(_httpClientMock.Object, _alertApiUrl, _loggerMock.Object);
         }
 
         [Fact]
@@ -117,7 +120,7 @@ namespace Synapse.Tests.Services
         public void Constructor_InvalidApiUrl_ThrowsArgumentException(string invalidUrl)
         {
             // Act
-            Action act = () => new AlertService(_httpClientMock.Object, invalidUrl);
+            Action act = () => new AlertService(_httpClientMock.Object, invalidUrl, _loggerMock.Object);
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -128,7 +131,7 @@ namespace Synapse.Tests.Services
         public void Constructor_NullHttpClient_ThrowsArgumentNullException()
         {
             // Act
-            Action act = () => new AlertService(null, _alertApiUrl);
+            Action act = () => new AlertService(null, _alertApiUrl, _loggerMock.Object);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -143,8 +146,8 @@ namespace Synapse.Tests.Services
             string expectedMessage = $"Alert for delivered item: Order {orderId}, Item: {item.Description}, " +
                                 $"Delivery Notifications: {item.DeliveryNotification}";
 
-            return alertData["Message"].ToString() == expectedMessage &&
-                   content.Headers.ContentType.MediaType == "application/json";
+            return alertData["Message"]?.ToString() == expectedMessage &&
+                   content.Headers.ContentType?.MediaType == "application/json";
         }
     }
 
